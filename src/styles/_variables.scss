@@ -1,0 +1,24 @@
+$color-primary: #002ee7;
+$color-primary-light: #395ff7;
+$color-primary-dark: #272b35;
+
+$color-gold: #f5a623;
+$color-gray: #e5e4e9;
+$color-gray-dark: #666666;
+$color-gray-medium: #a9a9a9;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-success: #0fb600;
+$color-green: #87be00;
+$color-red: #e2445c;
+$color-orange: #ff642e;
+$color-blue-light: #0086c0;
+$color-violet: #784bd1;
+$color-royal-blue: #6246ea;
+
+$filter-color-white: invert(99%) sepia(0%) saturate(2581%) hue-rotate(217deg)
+  brightness(110%) contrast(101%);
+$filter-color-gold: invert(83%) sepia(30%) saturate(4255%) hue-rotate(341deg)
+  brightness(98%) contrast(96%);
+$filter-color-black: invert(0%) sepia(4%) saturate(0%) hue-rotate(272deg)
+  brightness(104%) contrast(104%);

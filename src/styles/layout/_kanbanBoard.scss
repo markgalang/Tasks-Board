@@ -1,0 +1,92 @@
+.kanban {
+  &__header {
+    max-width: 60rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  &__header-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    @media only screen and (min-width: 500px) {
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+  &__header-bottom {
+    display: flex;
+    padding: 1rem 0;
+    text-align: left;
+  }
+
+  &__title {
+    max-width: 30rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid $color-gray-dark;
+  }
+
+  &__members {
+    display: flex;
+    align-items: center;
+  }
+
+  &__profile-picture {
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-sizing: content-box;
+    transform: scale(1);
+    transition: all 0.3s;
+    object-fit: cover;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.5);
+      z-index: 5;
+    }
+
+    &:not(:last-child) {
+      margin-right: -0.8rem;
+    }
+  }
+
+  &__back-button {
+    background-color: transparent;
+    align-self: flex-start;
+    width: max-content;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+  &__back-button-icon {
+    transform: scale(0.7) translatex(5px);
+    transition: all 0.4s ease;
+  }
+  &__back-button:hover &__back-button-icon {
+    transform: scale(1) translatex(-10px);
+  }
+
+  &__member-invite-modal {
+    .modal-content {
+      max-width: 45rem;
+      margin: 0 auto;
+    }
+  }
+
+  &__title-input {
+    .MuiInputBase-root.MuiInput-root {
+      width: 28rem;
+      // width: 100%;
+      font-size: 2rem;
+    }
+  }
+}
