@@ -1,61 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
+import { onDragEnd } from "../redux/actions/BoardActions";
 
 // component
 import TaskColumn from "../components/TaskColumn";
 
-const onDragEnd = (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination, type } = result;
-  if (type === "column") {
-    let newColumnOrders = Object.entries(columns);
-    const [draggedColumn] = newColumnOrders.splice(source.index, 1);
-    newColumnOrders.splice(destination.index, 0, draggedColumn);
-    setColumns(Object.fromEntries(newColumnOrders));
-  } else {
-    if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.tasks];
-      const destItems = [...destColumn.tasks];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          tasks: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          tasks: destItems,
-        },
-      });
-    } else {
-      const column = columns[source.droppableId];
-      const copiedItems = [...column.tasks];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          tasks: copiedItems,
-        },
-      });
-    }
-  }
-};
-
 const TaskBoard = (props) => {
   const { TaskColumns } = props;
-  const [columns, setColumns] = useState(TaskColumns);
+  const { onDragEnd } = props;
 
   return (
     <div className="task-manager">
       <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        onDragEnd={(result) => onDragEnd(result, TaskColumns, null)}
       >
         <Droppable
           droppableId="all-columns"
@@ -69,7 +27,7 @@ const TaskBoard = (props) => {
                 ref={provided.innerRef}
                 style={{ display: "flex" }}
               >
-                {Object.entries(columns).map(
+                {Object.entries(TaskColumns).map(
                   ([columnId, columnData], index) => {
                     return (
                       <TaskColumn
@@ -96,4 +54,8 @@ const mapStateToProps = (state) => {
     TaskColumns: state.board,
   };
 };
-export default connect(mapStateToProps)(TaskBoard);
+
+const mapActionToProps = {
+  onDragEnd,
+};
+export default connect(mapStateToProps, mapActionToProps)(TaskBoard);
