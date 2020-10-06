@@ -1,47 +1,9 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import uuid from "uuid/v4";
+import { connect } from "react-redux";
 
 // component
 import TaskColumn from "../components/TaskColumn";
-
-const itemsFromBackend = [
-  {
-    id: uuid(),
-    title: "one",
-    description: "lorem ipsum dolor",
-    assignedTo: [],
-    due_date: "",
-    isCompleted: false,
-  },
-  {
-    id: uuid(),
-    title: "two",
-    description: "lorem ipsum dolor",
-    assignedTo: [],
-    due_date: "",
-    isCompleted: false,
-  },
-];
-
-const columnsFromBackend = {
-  [uuid()]: {
-    title: "Requested",
-    tasks: itemsFromBackend,
-  },
-  [uuid()]: {
-    title: "To do",
-    tasks: [],
-  },
-  [uuid()]: {
-    title: "In Progress",
-    tasks: [],
-  },
-  [uuid()]: {
-    title: "Done",
-    tasks: [],
-  },
-};
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -86,8 +48,9 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-const TaskBoard = () => {
-  const [columns, setColumns] = useState(columnsFromBackend);
+const TaskBoard = (props) => {
+  const { TaskColumns } = props;
+  const [columns, setColumns] = useState(TaskColumns);
 
   return (
     <div className="task-manager">
@@ -128,4 +91,9 @@ const TaskBoard = () => {
   );
 };
 
-export default TaskBoard;
+const mapStateToProps = (state) => {
+  return {
+    TaskColumns: state.board,
+  };
+};
+export default connect(mapStateToProps)(TaskBoard);

@@ -9,11 +9,7 @@ const TaskColumn = (props) => {
   const { title, tasks } = columnData;
 
   return (
-    <Draggable
-      draggableId={String(index)}
-      index={index}
-      //   isDragDisabled={!isAuthorizeToEdit}
-    >
+    <Draggable draggableId={String(index)} index={index}>
       {(provided) => {
         return (
           <div
