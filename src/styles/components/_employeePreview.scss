@@ -1,0 +1,26 @@
+.employee-preview {
+  border-radius: 50px 50px;
+  display: flex;
+  padding: 0.4rem 0.6rem;
+  width: fit-content;
+  font-size: 1rem;
+  align-content: center;
+  align-items: center;
+  margin: 5px;
+  border: 1px solid #c4c4c4;
+  color: #666666;
+
+  &__image {
+    height: 2rem;
+    width: 2rem;
+    margin-right: 1rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: inherit;
+    padding-right: 5px;
+  }
+}

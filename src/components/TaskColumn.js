@@ -43,8 +43,8 @@ const TaskColumn = (props) => {
                         );
                       })}
                       {provided.placeholder}
-                      <NewTaskInput columnId={id} />
                     </div>
+                    <NewTaskInput columnId={id} />
                   </>
                 );
               }}

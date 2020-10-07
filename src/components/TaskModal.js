@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 // import { useHistory } from "react-router-dom";
-// import moment from "moment";
+import moment from "moment";
 
 // import FormHelperText from "@material-ui/core/FormHelperText";
 
 // Components
-// import EmployeePreview from "../EmployeeBoxPreview";
+import EmployeePreview from "./EmployeeBoxPreview";
 // import Comment from "./Comment";
-// import DeleteModal from "./DeleteConfirmationModal";
+import DeleteModal from "./DeleteModal";
 
 // bootstrap
 import Modal from "react-bootstrap/Modal";
 
 // MUI
-// import InputBase from "@material-ui/core/InputBase";
-// import TextField from "@material-ui/core/TextField";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
-// import Menu from "@material-ui/core/Menu";
-// import MenuItem from "@material-ui/core/MenuItem";
+import InputBase from "@material-ui/core/InputBase";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // icons
 import {
@@ -210,118 +210,73 @@ import { CLOSE_TASK_MODAL } from "../redux/type";
 // };
 
 const TaskDetails = (props) => {
-  // let history = useHistory();
-  // const { anchorEl, handleMenuClose, handleMenuClick } = useContext(
-  //   TasksContext
+  const [newComment, setNewComment] = useState("");
+  const {
+    id,
+    isCompleted,
+    // comments,
+    description,
+    due_date,
+    assignedTo,
+    title,
+    content,
+  } = props.modalContent;
+
+  let taskId = id;
+
+  const handleStatusUpdate = (e) => {
+    e.preventDefault();
+    alert("toggle completion");
+  };
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    alert("add comment");
+  };
+
+  let assignedUsers = [<em>test</em>];
+  // assignedTo && assignedTo.length > 0 ? (
+  //   assignedTo.map((user, index) => (
+  //     <EmployeePreview key={index} userInfo={user} />
+  //   ))
+  // ) : (
+  //   <span>
+  //     <em>No Assigned User</em>
+  //   </span>
   // );
-  // const { allProjects } = useContext(ProjectContext);
-  // const { projectDetails } = useContext(TasksContext);
-  // const { updateDashboardDetails } = useContext(DashboardContext);
-  // const [newComment, setNewComment] = useState("");
-  // const {
-  //   modalContent,
-  //   setModalContent,
-  //   authenticatedUser,
-  //   handleOpenModal,
-  // } = useContext(GlobalContext);
-  // const {
-  //   _id,
-  //   isCompleted,
-  //   comments,
-  //   description,
-  //   due_date,
-  //   due_date_time,
-  //   assignedTo,
-  //   title,
-  //   content,
-  //   taskNumber,
-  // } = modalContent;
 
-  // const { projectCode } = allProjects.find(
-  //   (project) => project._id === modalContent.projectId
-  // ) || { projectCode: "" };
-
-  // const isAuthorizeToEdit =
-  //   Boolean(
-  //     projectDetails.editors.find(
-  //       (user) => user._id === authenticatedUser._id
-  //     ) || authenticatedUser.role === "admin"
-  //   ) || modalContent.author === authenticatedUser._id;
-
-  // let taskId = _id;
-
-  // const handleStatusUpdate = (e) => {
-  //   e.preventDefault();
-  //   axios
-  //     .put(`/tasks/${taskId}/status`, { isCompleted: !isCompleted })
-  //     .then((response) => {
-  //       setModalContent(response.data);
-  //       updateDashboardDetails();
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
-  // const handleCommentSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (newComment) {
-  //     axios
-  //       .post(`/comments/${taskId}`, { comment: newComment })
-  //       .then((response) => {
-  //         setNewComment("");
-  //         setModalContent(response.data.task);
-  //       })
-  //       .catch((err) => {
-  //         history.push("/dashboard/payment");
-  //       });
-  //   }
-  // };
-
-  // let assignedUsers =
-  //   assignedTo && assignedTo.length > 0 ? (
-  //     assignedTo.map((user, index) => (
-  //       <EmployeePreview key={index} userInfo={user} />
-  //     ))
-  //   ) : (
-  //     <span>
-  //       <em>No Assigned User</em>
-  //     </span>
-  //   );
-
-  // let taskComments =
-  //   comments && comments.length > 0 ? (
-  //     comments.map((comment, index) => (
-  //       <Comment
-  //         key={index}
-  //         author={comment.author}
-  //         comment={comment.comment}
-  //         postedOn={comment.createdAt}
-  //       />
-  //     ))
-  //   ) : (
-  //     <span>
-  //       <em>No comments added</em>
-  //     </span>
-  //   );
+  let taskComments = [<em>test</em>];
+  // comments && comments.length > 0 ? (
+  //   comments.map((comment, index) => (
+  //     <Comment
+  //       key={index}
+  //       author={comment.author}
+  //       comment={comment.comment}
+  //       postedOn={comment.createdAt}
+  //     />
+  //   ))
+  // ) : (
+  //   <span>
+  //     <em>No comments added</em>
+  //   </span>
+  // );
 
   return (
     <Modal.Body>
-      <h1>hello</h1>
-      {/* <div className="task-modal">
+      <div className="task-modal">
         <X className="task-modal__button--close" onClick={props.handleHide} />
         <h3 className="task-modal__title">
-          {title ? `${projectCode}${taskNumber} - ${title}` : content}
+          {title}
 
-          {isAuthorizeToEdit && (
-            <MoreHorizontal
-              onClick={(e) => {
-                handleMenuClick(e);
-              }}
-            />
-          )}
+          <MoreHorizontal
+            onClick={(e) => {
+              alert("handle menu click");
+            }}
+          />
 
-          <Menu
-            key={_id}
-            id={_id}
+          {/* <Menu
+            key={id}
+            id={id}
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={(e) => {
@@ -357,7 +312,7 @@ const TaskDetails = (props) => {
             >
               Remove
             </MenuItem>
-          </Menu>
+          </Menu> */}
         </h3>
 
         <div className="task-modal__status">
@@ -394,12 +349,10 @@ const TaskDetails = (props) => {
             Due Date
           </p>
 
-          {modalContent.due_date ? (
+          {due_date ? (
             <span className="task-modal__due-date--container">
               <span className="task-modal__due-date--date">
-                {moment(`${due_date} ${due_date_time}`).format(
-                  "MMM DD, YYYY hh:mm A"
-                )}
+                {moment(`${due_date}`).format("MMM DD, YYYY hh:mm A")}
               </span>
               <small className="task-modal__due-date--text">Due Date</small>
             </span>
@@ -428,11 +381,11 @@ const TaskDetails = (props) => {
             onSubmit={(e) => handleCommentSubmit(e)}
             className="comment-form"
           >
-            <img
+            {/* <img
               src={authenticatedUser.userImage}
               alt={`${authenticatedUser.firstName} ${authenticatedUser.lastName}`}
               className="comment__author--image"
-            />
+            /> */}
             <InputBase
               className="comment-form__text-area"
               multiline
@@ -446,7 +399,7 @@ const TaskDetails = (props) => {
           </form>
           {taskComments}
         </div>
-      </div>*/}
+      </div>
     </Modal.Body>
   );
 };
@@ -463,13 +416,14 @@ const TaskModal = (props) => {
     <Modal
       show={modals.taskModal}
       onHide={handleHide}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
       scrollable
     >
       {/* {!isEditClicked ? ( */}
       <TaskDetails
+        modalContent={modals.modalContent}
         handleHide={handleHide}
         setIsEditClicked={setIsEditClicked}
       />
@@ -497,4 +451,5 @@ const mapStateToProps = (state) => {
     modals: state.modals,
   };
 };
+
 export default connect(mapStateToProps)(TaskModal);

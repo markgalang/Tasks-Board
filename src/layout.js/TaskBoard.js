@@ -6,6 +6,7 @@ import { onDragEnd, addNewColumn } from "../redux/actions/BoardActions";
 // component
 import TaskColumn from "../components/TaskColumn";
 import TaskModal from "../components/TaskModal";
+import DeleteModal from "../components/DeleteModal";
 
 // MUI
 import Input from "@material-ui/core/Input";
@@ -15,7 +16,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { Plus } from "react-feather";
 
 const TaskBoard = (props) => {
-  const { TaskColumns, modals } = props;
+  const { TaskColumns } = props;
   const { onDragEnd, addNewColumn } = props;
   const [newCardTitle, setNewCardTitle] = useState("");
   const [isNewCardClicked, setNewCardClicked] = useState(false);
@@ -25,6 +26,7 @@ const TaskBoard = (props) => {
 
     if (newCardTitle !== "") {
       addNewColumn(newCardTitle);
+      setNewCardTitle("");
     }
   };
 
@@ -104,6 +106,7 @@ const TaskBoard = (props) => {
 
       {/* ----- modals ----- */}
       <TaskModal />
+      <DeleteModal />
     </div>
   );
 };

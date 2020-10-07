@@ -1,0 +1,68 @@
+.delete-modal {
+  height: 350px;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 1.4rem;
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__buttons {
+    display: flex;
+    height: 3rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: $color-white;
+
+    &--remove {
+      flex: 1;
+      text-transform: uppercase;
+      background-color: $color-gold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background-color: rgba($color-gold, 0.9);
+      }
+    }
+
+    &--cancel {
+      flex: 1;
+      background-color: $color-primary-dark;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        background-color: rgba($color-primary-dark, 0.9);
+      }
+    }
+  }
+}
+
+// SECOND MODAL
+.delete-modal-dialog-backdrop {
+  opacity: 0.7 !important;
+  z-index: 10000;
+}
+
+.fade.delete-modal-dialog.modal.show {
+  z-index: 10001;
+}
+
+.delete-modal-dialog .modal-content {
+  border-radius: 0;
+}
