@@ -5,11 +5,9 @@ import ReduxProvider from "./redux/provider";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ReduxProvider>
-      <App />
-    </ReduxProvider>
-  </React.StrictMode>,
+  <ReduxProvider>
+    <App />
+  </ReduxProvider>,
   document.getElementById("root")
 );
 

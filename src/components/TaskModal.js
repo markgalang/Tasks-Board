@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import moment from "moment";
@@ -8,17 +8,16 @@ import moment from "moment";
 // Components
 import EmployeePreview from "./EmployeeBoxPreview";
 // import Comment from "./Comment";
-import DeleteModal from "./DeleteModal";
 
 // bootstrap
 import Modal from "react-bootstrap/Modal";
 
 // MUI
 import InputBase from "@material-ui/core/InputBase";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+// import TextField from "@material-ui/core/TextField";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
+// import Menu from "@material-ui/core/Menu";
+// import MenuItem from "@material-ui/core/MenuItem";
 
 // icons
 import {
@@ -27,7 +26,7 @@ import {
   Clipboard,
   Calendar,
   MoreHorizontal,
-  Clock,
+  // Clock,
 } from "react-feather";
 import { CLOSE_TASK_MODAL } from "../redux/type";
 
@@ -211,18 +210,18 @@ import { CLOSE_TASK_MODAL } from "../redux/type";
 
 const TaskDetails = (props) => {
   const [newComment, setNewComment] = useState("");
+  const { modalContent, authenticatedUser } = props;
   const {
-    id,
+    // id,
     isCompleted,
     // comments,
     description,
     due_date,
     assignedTo,
     title,
-    content,
-  } = props.modalContent;
+  } = modalContent;
 
-  let taskId = id;
+  // let taskId = id;
 
   const handleStatusUpdate = (e) => {
     e.preventDefault();
@@ -234,18 +233,18 @@ const TaskDetails = (props) => {
     alert("add comment");
   };
 
-  let assignedUsers = [<em>test</em>];
-  // assignedTo && assignedTo.length > 0 ? (
-  //   assignedTo.map((user, index) => (
-  //     <EmployeePreview key={index} userInfo={user} />
-  //   ))
-  // ) : (
-  //   <span>
-  //     <em>No Assigned User</em>
-  //   </span>
-  // );
+  let assignedUsers =
+    assignedTo && assignedTo.length > 0 ? (
+      assignedTo.map((user, index) => (
+        <EmployeePreview key={index} userInfo={user} />
+      ))
+    ) : (
+      <span>
+        <em>No Assigned User</em>
+      </span>
+    );
 
-  let taskComments = [<em>test</em>];
+  let taskComments = [];
   // comments && comments.length > 0 ? (
   //   comments.map((comment, index) => (
   //     <Comment
@@ -352,7 +351,7 @@ const TaskDetails = (props) => {
           {due_date ? (
             <span className="task-modal__due-date--container">
               <span className="task-modal__due-date--date">
-                {moment(`${due_date}`).format("MMM DD, YYYY hh:mm A")}
+                {moment(due_date).format("MMM DD, YYYY")}
               </span>
               <small className="task-modal__due-date--text">Due Date</small>
             </span>
@@ -381,11 +380,12 @@ const TaskDetails = (props) => {
             onSubmit={(e) => handleCommentSubmit(e)}
             className="comment-form"
           >
-            {/* <img
+            <img
               src={authenticatedUser.userImage}
               alt={`${authenticatedUser.firstName} ${authenticatedUser.lastName}`}
               className="comment__author--image"
-            /> */}
+            />
+
             <InputBase
               className="comment-form__text-area"
               multiline
@@ -405,8 +405,12 @@ const TaskDetails = (props) => {
 };
 
 const TaskModal = (props) => {
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const { modals, dispatch } = props;
+  const [
+    ,
+    // isEditClicked
+    setIsEditClicked,
+  ] = useState(false);
+  const { modals, authenticatedUser, dispatch } = props;
 
   const handleHide = () => {
     dispatch({ type: CLOSE_TASK_MODAL });
@@ -426,6 +430,7 @@ const TaskModal = (props) => {
         modalContent={modals.modalContent}
         handleHide={handleHide}
         setIsEditClicked={setIsEditClicked}
+        authenticatedUser={authenticatedUser}
       />
       {/* ) : (
         <TaskForm
@@ -449,6 +454,7 @@ const TaskModal = (props) => {
 const mapStateToProps = (state) => {
   return {
     modals: state.modals,
+    authenticatedUser: state.authenticatedUser,
   };
 };
 

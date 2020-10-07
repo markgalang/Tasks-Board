@@ -1,0 +1,67 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+  border-top: 2px solid $color-gray;
+
+  @media only screen and (min-width: 800px) {
+    flex-direction: row;
+  }
+
+  &__author {
+    display: flex;
+    padding: 0.5rem;
+    padding-left: 0;
+    min-width: 18rem;
+
+    @media only screen and (min-width: 800px) {
+      width: 35%;
+      padding: 1rem;
+      padding-left: 0;
+    }
+
+    &--details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--image {
+      height: 3.3rem;
+      width: 3.3rem;
+      margin-right: 1rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &--name {
+      font-weight: 600;
+      color: #666666;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    &--postedOn {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__content {
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+
+    @media only screen and (min-width: 800px) {
+      padding: 0.5rem 1rem;
+    }
+  }
+}

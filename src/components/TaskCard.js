@@ -8,7 +8,7 @@ import { OPEN_TASK_MODAL } from "../redux/type";
 
 const TaskCard = (props) => {
   const { task, index, dispatch } = props;
-  const { title, description, assignedTo, due_date, isCompleted } = task;
+  const { title, assignedTo, due_date, isCompleted } = task;
   const currentDate = moment(Date.now()).format("YYYY-MM-DD");
   const isOverdue = moment(currentDate).isAfter(due_date);
   const taskMembersLength = assignedTo.length;

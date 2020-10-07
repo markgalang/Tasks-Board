@@ -11,7 +11,7 @@ const DeleteConfirmationModal = (props) => {
 
   return (
     <Modal
-      show={true}
+      show={false}
       // {...rest}
       aria-labelledby="contained-modal-title-vcenter"
       centered
