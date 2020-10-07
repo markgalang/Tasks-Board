@@ -1,3 +1,8 @@
 export const UPDATE_BOARD = "UPDATE_BOARD";
 export const ADD_COLUMN = "ADD_COLUMN";
 export const ADD_TASK = "ADD_TASK";
+
+export const OPEN_TASK_MODAL = "OPEN_TASK_MODAL";
+export const CLOSE_TASK_MODAL = "CLOSE_TASK_MODAL";
+export const OPEN_DELETE_MODAL = "OPEN_DELETE_MODAL";
+export const CLOSE_DELETE_MODAL = "CLOSE_DELETE_MODAL";

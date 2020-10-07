@@ -1,12 +1,14 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import moment from "moment";
+import { connect } from "react-redux";
 // icons
 import { Clock } from "react-feather";
+import { OPEN_TASK_MODAL } from "../redux/type";
 
 const TaskCard = (props) => {
-  const { task, index } = props;
-  const { title, assignedTo, due_date, isCompleted } = task;
+  const { task, index, dispatch } = props;
+  const { title, description, assignedTo, due_date, isCompleted } = task;
   const currentDate = moment(Date.now()).format("YYYY-MM-DD");
   const isOverdue = moment(currentDate).isAfter(due_date);
   const taskMembersLength = assignedTo.length;
@@ -65,7 +67,7 @@ const TaskCard = (props) => {
       {(provided, snapshot) => {
         return (
           <div
-            onClick={() => alert("open modal")}
+            onClick={() => dispatch({ type: OPEN_TASK_MODAL, payload: task })}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -93,4 +95,4 @@ const TaskCard = (props) => {
   );
 };
 
-export default TaskCard;
+export default connect()(TaskCard);
