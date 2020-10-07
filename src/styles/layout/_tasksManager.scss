@@ -4,3 +4,21 @@
   min-height: calc(100vh - 8rem);
   justify-content: flex-start;
 }
+
+.add-button {
+  border: none;
+  background: none;
+  border-radius: 50%;
+  padding: 0.3rem;
+  margin: 0 0.2rem;
+  transition: all 0.2s ease;
+  height: 34px;
+  width: 34px;
+  color: #969696;
+
+  &:hover {
+    color: #666666;
+    background-color: #cacaca;
+    box-shadow: 0 0 5px rgba(black, 0.5);
+  }
+}

@@ -3,6 +3,7 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 
 // components
 import TaskCard from "./TaskCard";
+import NewTaskInput from "./NewTaskInput";
 
 const TaskColumn = (props) => {
   const { id, columnData, index } = props;
@@ -42,6 +43,7 @@ const TaskColumn = (props) => {
                         );
                       })}
                       {provided.placeholder}
+                      <NewTaskInput columnId={id} />
                     </div>
                   </>
                 );

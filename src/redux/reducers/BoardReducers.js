@@ -1,4 +1,4 @@
-import { UPDATE_BOARD } from "../type";
+import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK } from "../type";
 import uuid from "uuid/v4";
 const itemsFromBackend = [
   {
@@ -21,19 +21,11 @@ const itemsFromBackend = [
 
 const columnsFromBackend = {
   [uuid()]: {
-    title: "Requested",
+    title: "To do",
     tasks: itemsFromBackend,
   },
   [uuid()]: {
-    title: "To do",
-    tasks: [],
-  },
-  [uuid()]: {
     title: "In Progress",
-    tasks: [],
-  },
-  [uuid()]: {
-    title: "Done",
     tasks: [],
   },
 };
@@ -41,6 +33,25 @@ export default (state = columnsFromBackend, action) => {
   switch (action.type) {
     case UPDATE_BOARD:
       return action.payload;
+    case ADD_COLUMN:
+      const newColumnCard = {
+        [uuid()]: {
+          title: action.payload.title,
+          tasks: [],
+        },
+      };
+      return { ...state, ...newColumnCard };
+
+    case ADD_TASK:
+      const { columnId, newTaskInfo } = action.payload;
+
+      let columnCopies = { ...state };
+      let updatedColumn = columnCopies[columnId];
+      updatedColumn.tasks.push(newTaskInfo);
+      columnCopies[columnId] = updatedColumn;
+
+      return columnCopies;
+
     default:
       return state;
   }
