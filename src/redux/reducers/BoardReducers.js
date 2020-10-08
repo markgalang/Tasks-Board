@@ -4,6 +4,8 @@ import {
   ADD_TASK,
   TOGGLE_STATUS,
   ADD_NEW_COMMENT,
+  UPDATE_COLUMN_TITLE,
+  DELETE_COLUMN,
 } from "../type";
 import uuid from "uuid/v4";
 
@@ -108,6 +110,22 @@ export default (state = columnsFromBackend, action) => {
       stateCopy[action.payload.columnId] = sourceColumn1;
 
       return stateCopy;
+
+    case UPDATE_COLUMN_TITLE:
+      const sourceColumn2 = stateCopy[action.payload.columnId];
+      sourceColumn2.title = action.payload.newTitle;
+      stateCopy[action.payload.columnId] = sourceColumn2;
+
+      return state;
+
+    case DELETE_COLUMN:
+      const filteredArrayBoard = Object.entries(stateCopy).filter((column) => {
+        return column[0] !== action.payload;
+      });
+
+      const filteredObjectBoard = Object.fromEntries(filteredArrayBoard);
+
+      return filteredObjectBoard;
     default:
       return state;
   }

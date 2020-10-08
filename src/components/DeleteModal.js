@@ -1,32 +1,40 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
+import { connect } from "react-redux";
+import { closeDeleteModal } from "../redux/actions/ModalActions";
+import { deleteColumn } from "../redux/actions/BoardActions";
 
-const DeleteConfirmationModal = (props) => {
-  // const { modalContent, verb, handleSubmit, ...rest } = props;
-  // const { _id, name, title, firstName, lastName } = modalContent;
+const DeleteModal = (props) => {
+  const { modal, closeDeleteModal, deleteColumn } = props;
+  const { id, title } = modal.modalContent;
 
-  // const handleDelete = (id) => {
-  //   handleSubmit(id);
-  // };
+  const handleDelete = (id) => {
+    if (modal.deleteModal) {
+      deleteColumn(id);
+    }
+
+    // else {
+
+    // }
+
+    closeDeleteModal();
+  };
 
   return (
     <Modal
-      show={false}
-      // {...rest}
+      show={modal.deleteModal}
+      onHide={() => closeDeleteModal()}
       aria-labelledby="contained-modal-title-vcenter"
       centered
       className="delete-modal-dialog"
       backdropClassName="delete-modal-dialog-backdrop"
     >
       <div className="delete-modal">
-        <h1>DELETE</h1>
-        {/* <div className="delete-modal__content">
+        <div className="delete-modal__content">
           <p>
-            Are you sure you want to {verb}{" "}
+            Are you sure you want to delete{" "}
             <span>
-              <strong>{`${
-                title || name || firstName + " " + lastName
-              }`}</strong>
+              <strong>{title}</strong>
             </span>
             ?
           </p>
@@ -34,20 +42,31 @@ const DeleteConfirmationModal = (props) => {
         <div className="delete-modal__buttons">
           <div
             className="delete-modal__buttons--remove"
-            onClick={() => alert(_id)}
+            onClick={() => handleDelete(id)}
           >
-            <p>{verb}</p>
+            <p>DELETE</p>
           </div>
           <div
             className="delete-modal__buttons--cancel"
-            onClick={() => alert()}
+            onClick={() => closeDeleteModal()}
           >
             <p>CANCEL</p>
           </div>
-        </div> */}
+        </div>
       </div>
     </Modal>
   );
 };
 
-export default DeleteConfirmationModal;
+const mapStateToProps = (state) => {
+  return {
+    modal: state.modals,
+  };
+};
+
+const mapActionToProps = {
+  closeDeleteModal,
+  deleteColumn,
+};
+
+export default connect(mapStateToProps, mapActionToProps)(DeleteModal);
