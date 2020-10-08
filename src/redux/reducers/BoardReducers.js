@@ -1,4 +1,10 @@
-import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK, TOGGLE_STATUS } from "../type";
+import {
+  UPDATE_BOARD,
+  ADD_COLUMN,
+  ADD_TASK,
+  TOGGLE_STATUS,
+  ADD_NEW_COMMENT,
+} from "../type";
 import uuid from "uuid/v4";
 
 const columnsFromBackend = {
@@ -24,6 +30,18 @@ const columnsFromBackend = {
               "https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png",
           },
         ],
+        comments: [
+          {
+            author: {
+              firstName: "Veronica",
+              lastName: "Sweet",
+              userImage:
+                "https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png",
+            },
+            comment: "Perfect!",
+            postedOn: Date.now(),
+          },
+        ],
         due_date: Date.now(),
         isCompleted: false,
       },
@@ -35,6 +53,7 @@ const columnsFromBackend = {
   },
 };
 export default (state = columnsFromBackend, action) => {
+  const stateCopy = { ...state };
   switch (action.type) {
     case UPDATE_BOARD:
       return action.payload;
@@ -60,7 +79,6 @@ export default (state = columnsFromBackend, action) => {
     case TOGGLE_STATUS:
       let { taskId, columnId } = action.payload;
 
-      const stateCopy = { ...state };
       const sourceColumn = stateCopy[columnId];
       let sourceTasks = sourceColumn.tasks;
       const newTasksArray = sourceTasks.map((task) => {
@@ -73,6 +91,21 @@ export default (state = columnsFromBackend, action) => {
       });
       sourceColumn.tasks = newTasksArray;
       stateCopy[columnId] = sourceColumn;
+
+      return stateCopy;
+
+    case ADD_NEW_COMMENT:
+      const sourceColumn1 = stateCopy[action.payload.columnId];
+      let sourceTasks1 = sourceColumn1.tasks;
+      const newTasksArray1 = sourceTasks1.map((task) => {
+        if (task.id === action.payload.taskId) {
+          task.comments.push(action.payload.newComment);
+        }
+
+        return task;
+      });
+      sourceColumn1.tasks = newTasksArray1;
+      stateCopy[action.payload.columnId] = sourceColumn1;
 
       return stateCopy;
     default:

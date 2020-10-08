@@ -1,4 +1,4 @@
-import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK } from "../type";
+import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK, ADD_NEW_COMMENT } from "../type";
 import uuid from "uuid/v4";
 
 export const onDragEnd = (result, columns, setColumns) => (dispatch) => {
@@ -58,9 +58,18 @@ export const addNewTask = (columnId, newTask) => (dispatch) => {
     title: newTask,
     description: "",
     assignedTo: [],
+    comments: [],
     due_date: "",
     isCompleted: false,
   };
 
   dispatch({ type: ADD_TASK, payload: { columnId, newTaskInfo } });
+};
+
+export const addNewComment = (taskId, columnId, newComment) => (dispatch) => {
+  if (newComment === "") return;
+  dispatch({
+    type: ADD_NEW_COMMENT,
+    payload: { taskId, columnId, newComment },
+  });
 };

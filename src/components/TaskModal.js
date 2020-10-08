@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-// import { useHistory } from "react-router-dom";
 import moment from "moment";
+import { addNewComment } from "../redux/actions/BoardActions";
 
 // import FormHelperText from "@material-ui/core/FormHelperText";
 
 // Components
 import EmployeePreview from "./EmployeeBoxPreview";
-// import Comment from "./Comment";
+import Comment from "./Comment";
 
 // bootstrap
 import Modal from "react-bootstrap/Modal";
@@ -216,7 +216,7 @@ const TaskDetails = (props) => {
     columnId,
     id,
     isCompleted,
-    // comments,
+    comments,
     description,
     due_date,
     assignedTo,
@@ -225,7 +225,7 @@ const TaskDetails = (props) => {
     columnId: "",
     id: "",
     isCompleted: false,
-    // comments,
+    comments: [],
     description: "",
     due_date: "",
     assignedTo: [],
@@ -248,7 +248,13 @@ const TaskDetails = (props) => {
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    alert("add comment");
+    const newCommentDetails = {
+      author: authenticatedUser,
+      postedOn: Date.now(),
+      comment: newComment,
+    };
+    props.dispatch(addNewComment(taskId, columnId, newCommentDetails));
+    setNewComment("");
   };
 
   let assignedUsers =
@@ -262,21 +268,21 @@ const TaskDetails = (props) => {
       </span>
     );
 
-  let taskComments = [];
-  // comments && comments.length > 0 ? (
-  //   comments.map((comment, index) => (
-  //     <Comment
-  //       key={index}
-  //       author={comment.author}
-  //       comment={comment.comment}
-  //       postedOn={comment.createdAt}
-  //     />
-  //   ))
-  // ) : (
-  //   <span>
-  //     <em>No comments added</em>
-  //   </span>
-  // );
+  let taskComments =
+    comments && comments.length > 0 ? (
+      comments.map((comment, index) => (
+        <Comment
+          key={index}
+          author={comment.author}
+          comment={comment.comment}
+          postedOn={comment.createdAt}
+        />
+      ))
+    ) : (
+      <span>
+        <em>No comments added</em>
+      </span>
+    );
 
   return (
     <Modal.Body>
@@ -430,7 +436,13 @@ const TaskModal = (props) => {
   ] = useState(false);
 
   const [taskInfo, setTaskInfo] = useState({});
-  const { modals, authenticatedUser, dispatch, taskColumns } = props;
+  const {
+    modals,
+    authenticatedUser,
+    dispatch,
+    taskColumns,
+    addNewComment,
+  } = props;
   const { id, columnId } = modals.modalContent;
 
   useEffect(() => {
@@ -464,6 +476,7 @@ const TaskModal = (props) => {
         setIsEditClicked={setIsEditClicked}
         authenticatedUser={authenticatedUser}
         dispatch={dispatch}
+        addNewComment={addNewComment}
       />
       {/* ) : (
         <TaskForm
@@ -492,4 +505,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(TaskModal);
+const mapActionToProps = (dispatch) => {
+  return {
+    dispatch,
+  };
+};
+
+export default connect(mapStateToProps, mapActionToProps)(TaskModal);
