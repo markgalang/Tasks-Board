@@ -7,7 +7,7 @@ import { Clock } from "react-feather";
 import { OPEN_TASK_MODAL } from "../redux/type";
 
 const TaskCard = (props) => {
-  const { task, index, dispatch } = props;
+  const { columnId, task, index, dispatch } = props;
   const { title, assignedTo, due_date, isCompleted } = task;
   const currentDate = moment(Date.now()).format("YYYY-MM-DD");
   const isOverdue = moment(currentDate).isAfter(due_date);
@@ -61,13 +61,17 @@ const TaskCard = (props) => {
       );
     }
   };
-
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => {
         return (
           <div
-            onClick={() => dispatch({ type: OPEN_TASK_MODAL, payload: task })}
+            onClick={() =>
+              dispatch({
+                type: OPEN_TASK_MODAL,
+                payload: { ...task, columnId },
+              })
+            }
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -85,7 +89,7 @@ const TaskCard = (props) => {
               </div>
               <div className="task-card__description--profile-pictures">
                 {userImages()}
-                {/* {taskMembersLength > 3 && `+${taskMembersLength - 3}`} */}
+                {taskMembersLength > 3 && `+${taskMembersLength - 3}`}
               </div>
             </div>
           </div>

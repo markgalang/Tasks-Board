@@ -1,4 +1,4 @@
-import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK } from "../type";
+import { UPDATE_BOARD, ADD_COLUMN, ADD_TASK, TOGGLE_STATUS } from "../type";
 import uuid from "uuid/v4";
 
 const columnsFromBackend = {
@@ -48,15 +48,33 @@ export default (state = columnsFromBackend, action) => {
       return { ...state, ...newColumnCard };
 
     case ADD_TASK:
-      const { columnId, newTaskInfo } = action.payload;
+      let { newTaskInfo } = action.payload;
 
       let columnCopies = { ...state };
-      let updatedColumn = columnCopies[columnId];
+      let updatedColumn = columnCopies[action.payload.columnId];
       updatedColumn.tasks.push(newTaskInfo);
-      columnCopies[columnId] = updatedColumn;
+      columnCopies[action.payload.columnId] = updatedColumn;
 
       return columnCopies;
 
+    case TOGGLE_STATUS:
+      let { taskId, columnId } = action.payload;
+
+      const stateCopy = { ...state };
+      const sourceColumn = stateCopy[columnId];
+      let sourceTasks = sourceColumn.tasks;
+      const newTasksArray = sourceTasks.map((task) => {
+        if (task.id === taskId) {
+          const newStatus = !task.isCompleted;
+          return { ...task, isCompleted: newStatus };
+        }
+
+        return task;
+      });
+      sourceColumn.tasks = newTasksArray;
+      stateCopy[columnId] = sourceColumn;
+
+      return stateCopy;
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import moment from "moment";
@@ -28,7 +28,7 @@ import {
   MoreHorizontal,
   // Clock,
 } from "react-feather";
-import { CLOSE_TASK_MODAL } from "../redux/type";
+import { CLOSE_TASK_MODAL, TOGGLE_STATUS } from "../redux/type";
 
 // const TaskForm = (props) => {
 //   // const { modalContent, setModalContent } = useContext(GlobalContext);
@@ -210,22 +210,40 @@ import { CLOSE_TASK_MODAL } from "../redux/type";
 
 const TaskDetails = (props) => {
   const [newComment, setNewComment] = useState("");
-  const { modalContent, authenticatedUser } = props;
+  const [taskInfo, setTaskInfo] = useState({});
+  const { authenticatedUser } = props;
   const {
-    // id,
+    columnId,
+    id,
     isCompleted,
     // comments,
     description,
     due_date,
     assignedTo,
     title,
-  } = modalContent;
+  } = taskInfo || {
+    columnId: "",
+    id: "",
+    isCompleted: false,
+    // comments,
+    description: "",
+    due_date: "",
+    assignedTo: [],
+    title: "",
+  };
 
-  // let taskId = id;
+  useEffect(() => {
+    setTaskInfo(props.modalContent);
+  }, [props]);
+
+  let taskId = id;
 
   const handleStatusUpdate = (e) => {
     e.preventDefault();
-    alert("toggle completion");
+    props.dispatch({
+      type: TOGGLE_STATUS,
+      payload: { taskId, columnId },
+    });
   };
 
   const handleCommentSubmit = (e) => {
@@ -410,7 +428,21 @@ const TaskModal = (props) => {
     // isEditClicked
     setIsEditClicked,
   ] = useState(false);
-  const { modals, authenticatedUser, dispatch } = props;
+
+  const [taskInfo, setTaskInfo] = useState({});
+  const { modals, authenticatedUser, dispatch, taskColumns } = props;
+  const { id, columnId } = modals.modalContent;
+
+  useEffect(() => {
+    const sourceColumn = taskColumns[columnId];
+    let selectedTask = (sourceColumn &&
+      sourceColumn.tasks.filter((task) => task.id === id)) || [{}];
+
+    selectedTask[0].columnId = columnId;
+
+    setTaskInfo(...selectedTask);
+    // eslint-disable-next-line
+  }, [props]);
 
   const handleHide = () => {
     dispatch({ type: CLOSE_TASK_MODAL });
@@ -427,10 +459,11 @@ const TaskModal = (props) => {
     >
       {/* {!isEditClicked ? ( */}
       <TaskDetails
-        modalContent={modals.modalContent}
+        modalContent={taskInfo}
         handleHide={handleHide}
         setIsEditClicked={setIsEditClicked}
         authenticatedUser={authenticatedUser}
+        dispatch={dispatch}
       />
       {/* ) : (
         <TaskForm
@@ -453,6 +486,7 @@ const TaskModal = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    taskColumns: state.board,
     modals: state.modals,
     authenticatedUser: state.authenticatedUser,
   };

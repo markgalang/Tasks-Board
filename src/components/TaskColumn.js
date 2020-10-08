@@ -8,7 +8,6 @@ import NewTaskInput from "./NewTaskInput";
 const TaskColumn = (props) => {
   const { id, columnData, index } = props;
   const { title, tasks } = columnData;
-
   return (
     <Draggable draggableId={String(index)} index={index}>
       {(provided) => {
@@ -39,7 +38,12 @@ const TaskColumn = (props) => {
                     >
                       {Object.entries(tasks).map(([columnId, task], index) => {
                         return (
-                          <TaskCard task={task} index={index} key={task.id} />
+                          <TaskCard
+                            columnId={id}
+                            task={task}
+                            index={index}
+                            key={task.id}
+                          />
                         );
                       })}
                       {provided.placeholder}
