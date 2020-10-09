@@ -71,12 +71,13 @@ export default (state = columnsFromBackend, action) => {
     case ADD_TASK:
       let { newTaskInfo } = action.payload;
 
-      let columnCopies = { ...state };
-      let updatedColumn = columnCopies[action.payload.columnId];
+      // let columnCopies = { ...state };
+      let updatedColumn = stateCopy[action.payload.columnId];
       updatedColumn.tasks.push(newTaskInfo);
-      columnCopies[action.payload.columnId] = updatedColumn;
+      stateCopy[action.payload.columnId] = updatedColumn;
 
-      return columnCopies;
+      console.log(stateCopy == state);
+      return { ...stateCopy };
 
     case TOGGLE_STATUS:
       let { taskId, columnId } = action.payload;

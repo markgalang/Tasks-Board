@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { onDragEnd, addNewColumn } from "../redux/actions/BoardActions";
@@ -21,6 +21,12 @@ const TaskBoard = (props) => {
   const [newCardTitle, setNewCardTitle] = useState("");
   const [isNewCardClicked, setNewCardClicked] = useState(false);
 
+  // useEffect(
+  //   (prevProps) => {
+  //     console.log(prevProps, props);
+  //   },
+  //   [props]
+  // );
   const handleNewCard = (e, newCardTitle) => {
     e.preventDefault();
 
@@ -112,6 +118,7 @@ const TaskBoard = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     TaskColumns: state.board,
   };

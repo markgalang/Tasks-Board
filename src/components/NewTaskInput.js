@@ -16,7 +16,7 @@ const NewTaskInput = (props) => {
   const handleSubmit = (e, columnId) => {
     e.preventDefault();
 
-    props.addNewTask(columnId, newTask);
+    props.dispatch(addNewTask(columnId, newTask));
     setNewTask("");
   };
 
@@ -35,7 +35,4 @@ const NewTaskInput = (props) => {
   );
 };
 
-const mapActionToProps = {
-  addNewTask,
-};
-export default connect(null, mapActionToProps)(NewTaskInput);
+export default connect(null)(NewTaskInput);
