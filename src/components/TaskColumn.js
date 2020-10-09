@@ -155,8 +155,14 @@ const TaskColumn = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return { ...state };
+};
+
 const mapActionToProps = {
   updateColumnTitle,
   openDeleteModal,
 };
-export default connect(null, mapActionToProps)(TaskColumn);
+
+export default connect(mapStateToProps, mapActionToProps)(TaskColumn);
+// export default TaskColumn;
