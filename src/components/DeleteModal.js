@@ -2,20 +2,18 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
 import { closeDeleteModal } from "../redux/actions/ModalActions";
-import { deleteColumn } from "../redux/actions/BoardActions";
+import { deleteColumn, deleteTask } from "../redux/actions/BoardActions";
 
 const DeleteModal = (props) => {
-  const { modal, closeDeleteModal, deleteColumn } = props;
-  const { id, title } = modal.modalContent;
+  const { modal, closeDeleteModal, deleteColumn, deleteTask } = props;
+  const { id, title, columnId } = modal.modalContent;
 
   const handleDelete = (id) => {
-    if (modal.deleteModal) {
+    if (modal.taskModal && modal.deleteModal) {
+      deleteTask(columnId, id);
+    } else if (modal.deleteModal) {
       deleteColumn(id);
     }
-
-    // else {
-
-    // }
 
     closeDeleteModal();
   };
@@ -67,6 +65,7 @@ const mapStateToProps = (state) => {
 const mapActionToProps = {
   closeDeleteModal,
   deleteColumn,
+  deleteTask,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(DeleteModal);

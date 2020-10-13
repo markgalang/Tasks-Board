@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { addNewComment } from "../redux/actions/BoardActions";
+import { openDeleteModal } from "../redux/actions/ModalActions";
 
 // import FormHelperText from "@material-ui/core/FormHelperText";
 
@@ -16,8 +17,8 @@ import Modal from "react-bootstrap/Modal";
 import InputBase from "@material-ui/core/InputBase";
 // import TextField from "@material-ui/core/TextField";
 // import Autocomplete from "@material-ui/lab/Autocomplete";
-// import Menu from "@material-ui/core/Menu";
-// import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // icons
 import {
@@ -211,6 +212,7 @@ import { CLOSE_TASK_MODAL, TOGGLE_STATUS } from "../redux/type";
 const TaskDetails = (props) => {
   const [newComment, setNewComment] = useState("");
   const [taskInfo, setTaskInfo] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
   const { authenticatedUser } = props;
   const {
     columnId,
@@ -293,18 +295,18 @@ const TaskDetails = (props) => {
 
           <MoreHorizontal
             onClick={(e) => {
-              alert("handle menu click");
+              setAnchorEl(e.currentTarget);
             }}
           />
 
-          {/* <Menu
+          <Menu
             key={id}
             id={id}
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={(e) => {
               e.stopPropagation();
-              handleMenuClose();
+              setAnchorEl(null);
             }}
             elevation={0}
             getContentAnchorEl={null}
@@ -320,8 +322,9 @@ const TaskDetails = (props) => {
             <MenuItem
               onClick={(e) => {
                 e.stopPropagation();
-                props.setIsEditClicked(true);
-                handleMenuClose();
+                setAnchorEl(null);
+                // props.setIsEditClicked(true);
+                // handleMenuClose();
               }}
             >
               Edit
@@ -329,13 +332,13 @@ const TaskDetails = (props) => {
             <MenuItem
               onClick={(e) => {
                 e.stopPropagation();
-                handleOpenModal(modalContent, TASK_DELETE_MODAL);
-                handleMenuClose();
+                setAnchorEl(null);
+                props.dispatch(openDeleteModal(taskInfo));
               }}
             >
               Remove
             </MenuItem>
-          </Menu> */}
+          </Menu>
         </h3>
 
         <div className="task-modal__status">
@@ -485,14 +488,7 @@ const TaskModal = (props) => {
           setIsEditClicked={setIsEditClicked}
         />
       )}
-
-      <DeleteModal
-        show={modals.TASK_DELETE_MODAL}
-        onHide={() => handleCloseModal(TASK_DELETE_MODAL)}
-        handleSubmit={handleDeleteTask}
-        verb="delete"
-        modalContent={modalContent}
-      /> */}
+ */}
     </Modal>
   );
 };

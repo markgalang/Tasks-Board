@@ -6,6 +6,7 @@ import {
   ADD_NEW_COMMENT,
   UPDATE_COLUMN_TITLE,
   DELETE_COLUMN,
+  DELETE_TASK,
 } from "../type";
 import uuid from "uuid/v4";
 
@@ -54,6 +55,7 @@ const columnsFromBackend = {
     tasks: [],
   },
 };
+
 export default (state = columnsFromBackend, action) => {
   const stateCopy = { ...state };
   switch (action.type) {
@@ -126,6 +128,17 @@ export default (state = columnsFromBackend, action) => {
       const filteredObjectBoard = Object.fromEntries(filteredArrayBoard);
 
       return filteredObjectBoard;
+
+    case DELETE_TASK:
+      let sourceDeleteColumn = stateCopy[action.payload.columnId];
+      const newColumn = sourceDeleteColumn.tasks.filter(
+        (task) => task.id !== action.payload.taskId
+      );
+
+      stateCopy[action.payload.columnId].tasks = newColumn;
+
+      return stateCopy;
+
     default:
       return state;
   }
