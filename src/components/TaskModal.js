@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import { addNewComment } from "../redux/actions/BoardActions";
 import { openDeleteModal } from "../redux/actions/ModalActions";
-
+import { updateTask } from "../redux/actions/BoardActions";
 // import FormHelperText from "@material-ui/core/FormHelperText";
 
 // Components
@@ -15,8 +15,8 @@ import Modal from "react-bootstrap/Modal";
 
 // MUI
 import InputBase from "@material-ui/core/InputBase";
-// import TextField from "@material-ui/core/TextField";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -29,185 +29,170 @@ import {
   MoreHorizontal,
   // Clock,
 } from "react-feather";
-import { CLOSE_TASK_MODAL, TOGGLE_STATUS } from "../redux/type";
+import { CLOSE_DELETE_MODAL, TOGGLE_STATUS } from "../redux/type";
 
-// const TaskForm = (props) => {
-//   // const { modalContent, setModalContent } = useContext(GlobalContext);
-//   // const { updateDashboardDetails } = useContext(DashboardContext);
-//   // const [taskDetails, setTaskDetails] = useState({});
-//   // const {
-//   //   description,
-//   //   due_date,
-//   //   assignedTo = [],
-//   //   title,
-//   //   due_date_time,
-//   // } = taskDetails;
-//   // let taskId = modalContent._id;
-//   // const { projectMembers } = props;
+const TaskForm = (props) => {
+  const [taskDetails, setTaskDetails] = useState({});
+  const {
+    description,
+    due_date,
+    assignedTo = [],
+    title,
+    id,
+    columnId,
+  } = taskDetails;
+  const AllUsers = [
+    {
+      firstName: "Guest",
+      lastName: "User",
+      userImage:
+        "https://c7.uihere.com/files/348/800/890/computer-icons-avatar-user-login-avatar-thumb.jpg",
+    },
+    {
+      firstName: "Mark",
+      lastName: "Galang",
+      userImage:
+        "https://www.dovercourt.org/wp-content/uploads/2019/11/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg",
+    },
+    {
+      firstName: "Veronica",
+      lastName: "Sweet",
+      userImage:
+        "https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png",
+    },
+  ];
+  // let taskId = props.modalContent.id;
 
-//   // const [errors, setErrors] = useState({ somethingErr: false });
+  // const [errors, setErrors] = useState({ somethingErr: false });
 
-//   // useEffect(() => {
-//   //   const {
-//   //     description,
-//   //     due_date,
-//   //     assignedTo,
-//   //     title,
-//   //     due_date_time,
-//   //   } = modalContent;
-//   //   setTaskDetails({ description, due_date, assignedTo, title, due_date_time });
-//   // }, [modalContent]);
+  useEffect(() => {
+    setTaskDetails(props.modalContent);
+  }, [props]);
 
-//   // const handleUpdate = (e) => {
-//   //   e.preventDefault();
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    props.dispatch(updateTask(columnId, id, taskDetails));
+    props.setIsEditClicked(false);
+    // if (due_date !== undefined && due_date_time === undefined) {
+    //   return setErrors({
+    //     errorMsg: `Due Date Time must not be empty if there is a Due Date`,
+    //   });
+    // }
 
-//   //   if (due_date !== undefined && due_date_time === undefined) {
-//   //     return setErrors({
-//   //       errorMsg: `Due Date Time must not be empty if there is a Due Date`,
-//   //     });
-//   //   }
+    // if (due_date === undefined && due_date_time !== undefined) {
+    //   return setErrors({
+    //     errorMsg: `Due Date can must be empty if there is a Due Date Time`,
+    //   });
+    // }
 
-//   //   if (due_date === undefined && due_date_time !== undefined) {
-//   //     return setErrors({
-//   //       errorMsg: `Due Date can must be empty if there is a Due Date Time`,
-//   //     });
-//   //   }
+    return null;
+  };
 
-//   //   return axios
-//   //     .put(`/tasks/${taskId}`, taskDetails)
-//   //     .then((response) => {
-//   //       props.setIsEditClicked(false);
-//   //       setModalContent(response.data.task);
-//   //       updateDashboardDetails();
-//   //     })
-//   //     .catch((err) => console.log(err.response.data));
-//   // };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTaskDetails({ ...taskDetails, [name]: value });
+  };
 
-//   // const handleChange = (e) => {
-//   //   const { name, value } = e.target;
-//   //   setTaskDetails({ ...taskDetails, [name]: value });
-//   // };
+  const handleAssignedTo = (newValue) => {
+    setTaskDetails({ ...taskDetails, assignedTo: newValue });
+  };
 
-//   // const handleAssignedTo = (newValue) => {
-//   //   setTaskDetails({ ...taskDetails, assignedTo: newValue });
-//   // };
+  return (
+    <>
+      <div className="task-modal__header">
+        <div className="task-modal">
+          <X className="task-modal__button--close" onClick={props.handleHide} />
+          <form onKeyDown={(e) => e.keyCode === 13 && handleUpdate(e)}>
+            <h3 className="task-modal__title">
+              <InputBase
+                className="task-modal__text-area "
+                placeholder="Add Task Title here"
+                name="title"
+                value={title ? title : ""}
+                onChange={handleChange}
+              />
 
-//   return (
-//     <Fragment>
-//       <h1>TASK MODAL!</h1>
-//       {/* <div className="task-modal__header">
-//         <div className="task-modal">
-//           <X className="task-modal__button--close" onClick={props.handleHide} />
-//           <form onKeyDown={(e) => e.keyCode === 13 && handleUpdate(e)}>
-//             <h3 className="task-modal__title">
-//               <InputBase
-//                 className="task-modal__text-area "
-//                 placeholder="Add Task Title here"
-//                 name="title"
-//                 value={title ? title : ""}
-//                 onChange={handleChange}
-//               />
+              <button
+                className="task-modal__button--cancel"
+                onClick={() => props.setIsEditClicked(false)}
+              >
+                Cancel
+              </button>
+            </h3>
 
-//               <button
-//                 className="task-modal__button--cancel"
-//                 onClick={() => props.setIsEditClicked(false)}
-//               >
-//                 Cancel
-//               </button>
-//             </h3>
+            <div className="task-modal__assignedTo u-margin-medium-y">
+              <p className="task-modal__heading">
+                <Clipboard className="task-modal__heading--icon" />
+                Assigned To
+              </p>
 
-//             <div className="task-modal__assignedTo u-margin-medium-y">
-//               <p className="task-modal__heading">
-//                 <Clipboard className="task-modal__heading--icon" />
-//                 Assigned To
-//               </p>
+              <div className="task-modal__assignedTo--container">
+                <Autocomplete
+                  multiple
+                  fullWidth
+                  id="tags-standard"
+                  options={AllUsers}
+                  getOptionLabel={({ firstName, lastName }) => {
+                    return `${firstName} ${lastName}`;
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Assign to"
+                      className="task-modal__text-area"
+                    />
+                  )}
+                  onChange={(e, newValue) => handleAssignedTo(newValue)}
+                  getOptionSelected={(user, assignedTo) =>
+                    user.firstName === assignedTo.firstName
+                  }
+                  value={assignedTo}
+                />
+              </div>
+            </div>
+            <div className="task-modal__due-date u-margin-medium-y">
+              <p className="task-modal__heading">
+                <Calendar className="task-modal__heading--icon" />
+                Due Date
+              </p>
+              <InputBase
+                id="date"
+                type="date"
+                className="task-modal__text-area"
+                name="due_date"
+                value={moment(due_date).format("YYYY-MM-DD") || ""}
+                onChange={handleChange}
+                min={moment().format("YYYY-MM-DD")}
+              />
+            </div>
+          </form>
+          <div className="task-modal__description u-margin-medium-y">
+            <p className="task-modal__heading">
+              <AlignLeft className="task-modal__heading--icon" />
+              Description
+            </p>
 
-//               <div className="task-modal__assignedTo--container">
-//                 <Autocomplete
-//                   multiple
-//                   fullWidth
-//                   id="tags-standard"
-//                   options={projectMembers}
-//                   getOptionLabel={({ firstName, lastName }) => {
-//                     return `${firstName} ${lastName}`;
-//                   }}
-//                   renderInput={(params) => (
-//                     <TextField
-//                       {...params}
-//                       placeholder="Assign to"
-//                       className="task-modal__text-area"
-//                     />
-//                   )}
-//                   onChange={(e, newValue) => handleAssignedTo(newValue)}
-//                   getOptionSelected={(projectMembers, assignedTo) =>
-//                     projectMembers.firstName === assignedTo.firstName
-//                   }
-//                   value={assignedTo}
-//                 />
-//               </div>
-//             </div>
-//             <div className="task-modal__due-date u-margin-medium-y">
-//               <p className="task-modal__heading">
-//                 <Calendar className="task-modal__heading--icon" />
-//                 Due Date
-//               </p>
-//               <input
-//                 id="date"
-//                 type="date"
-//                 className="task-modal__text-area"
-//                 name="due_date"
-//                 value={due_date || ""}
-//                 onChange={handleChange}
-//                 min={moment().format("YYYY-MM-DD")}
-//               />
-//             </div>
-//             <div className="task-modal__due-date u-margin-medium-y">
-//               <p className="task-modal__heading">
-//                 <Clock className="task-modal__heading--icon" />
-//                 Due Date Time
-//               </p>
-//               <input
-//                 id="time"
-//                 type="time"
-//                 className="task-modal__text-area"
-//                 name="due_date_time"
-//                 value={due_date_time || ""}
-//                 onChange={handleChange}
-//                 min={moment().format("HH:mm")}
-//                 required
-//               />
-//               {errors && (
-//                 <FormHelperText error>{errors.errorMsg}</FormHelperText>
-//               )}
-//             </div>
-//           </form>
-//           <div className="task-modal__description u-margin-medium-y">
-//             <p className="task-modal__heading">
-//               <AlignLeft className="task-modal__heading--icon" />
-//               Description
-//             </p>
-
-//             <InputBase
-//               className="task-modal__text-area"
-//               multiline
-//               fullWidth
-//               rows="5"
-//               placeholder="Add Description here"
-//               name="description"
-//               value={description}
-//               onChange={handleChange}
-//             />
-//           </div>
-//         </div>
-//       </div>
-//       <div className="task-modal__footer">
-//         <div onClick={handleUpdate} className="task-modal__footer--button">
-//           Update Details
-//         </div>
-//       </div> */}
-//     </Fragment>
-//   );
-// };
+            <InputBase
+              className="task-modal__text-area"
+              multiline
+              fullWidth
+              rows="5"
+              placeholder="Add Description here"
+              name="description"
+              value={description}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="task-modal__footer">
+        <div onClick={handleUpdate} className="task-modal__footer--button">
+          Update Details
+        </div>
+      </div>
+    </>
+  );
+};
 
 const TaskDetails = (props) => {
   const [newComment, setNewComment] = useState("");
@@ -323,8 +308,7 @@ const TaskDetails = (props) => {
               onClick={(e) => {
                 e.stopPropagation();
                 setAnchorEl(null);
-                // props.setIsEditClicked(true);
-                // handleMenuClose();
+                props.setIsEditClicked(true);
               }}
             >
               Edit
@@ -432,11 +416,7 @@ const TaskDetails = (props) => {
 };
 
 const TaskModal = (props) => {
-  const [
-    ,
-    // isEditClicked
-    setIsEditClicked,
-  ] = useState(false);
+  const [isEditClicked, setIsEditClicked] = useState(false);
 
   const [taskInfo, setTaskInfo] = useState({});
   const {
@@ -460,7 +440,7 @@ const TaskModal = (props) => {
   }, [props]);
 
   const handleHide = () => {
-    dispatch({ type: CLOSE_TASK_MODAL });
+    dispatch({ type: CLOSE_DELETE_MODAL });
   };
 
   return (
@@ -472,23 +452,23 @@ const TaskModal = (props) => {
       centered
       scrollable
     >
-      {/* {!isEditClicked ? ( */}
-      <TaskDetails
-        modalContent={taskInfo}
-        handleHide={handleHide}
-        setIsEditClicked={setIsEditClicked}
-        authenticatedUser={authenticatedUser}
-        dispatch={dispatch}
-        addNewComment={addNewComment}
-      />
-      {/* ) : (
-        <TaskForm
-          projectMembers={projectMembers}
+      {!isEditClicked ? (
+        <TaskDetails
+          modalContent={taskInfo}
           handleHide={handleHide}
+          setIsEditClicked={setIsEditClicked}
+          authenticatedUser={authenticatedUser}
+          dispatch={dispatch}
+          addNewComment={addNewComment}
+        />
+      ) : (
+        <TaskForm
+          modalContent={taskInfo}
+          handleHide={handleHide}
+          dispatch={dispatch}
           setIsEditClicked={setIsEditClicked}
         />
       )}
- */}
     </Modal>
   );
 };

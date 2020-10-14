@@ -7,6 +7,7 @@ import {
   UPDATE_COLUMN_TITLE,
   DELETE_COLUMN,
   DELETE_TASK,
+  UPDATE_TASK_DETAILS,
 } from "../type";
 import uuid from "uuid/v4";
 
@@ -138,7 +139,20 @@ export default (state = columnsFromBackend, action) => {
       stateCopy[action.payload.columnId].tasks = newColumn;
 
       return stateCopy;
+    case UPDATE_TASK_DETAILS:
+      const sourceColumn4 = stateCopy[action.payload.columnId];
+      let sourceTasks4 = sourceColumn4.tasks;
+      const newTasksArray4 = sourceTasks4.map((task) => {
+        if (task.id === action.payload.taskId) {
+          return action.payload.newTaskInfo;
+        }
 
+        return task;
+      });
+      sourceColumn4.tasks = newTasksArray4;
+      stateCopy[action.payload.columnId] = sourceColumn4;
+
+      return stateCopy;
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import {
   UPDATE_COLUMN_TITLE,
   DELETE_COLUMN,
   DELETE_TASK,
+  UPDATE_TASK_DETAILS,
 } from "../type";
 import uuid from "uuid/v4";
 
@@ -93,4 +94,11 @@ export const deleteColumn = (columnId) => (dispatch) => {
 
 export const deleteTask = (columnId, taskId) => (dispatch) => {
   dispatch({ type: DELETE_TASK, payload: { columnId, taskId } });
+};
+
+export const updateTask = (columnId, taskId, newTaskInfo) => (dispatch) => {
+  dispatch({
+    type: UPDATE_TASK_DETAILS,
+    payload: { columnId, taskId, newTaskInfo },
+  });
 };
