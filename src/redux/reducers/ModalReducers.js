@@ -2,6 +2,7 @@ import {
   OPEN_TASK_MODAL,
   OPEN_DELETE_MODAL,
   CLOSE_DELETE_MODAL,
+  CLOSE_DELETE_MODAL_ONLY,
 } from "../type";
 
 const initialState = {
@@ -35,6 +36,13 @@ export default (state = initialState, action) => {
         taskModal: false,
         deleteModal: false,
         modalContent: "",
+      };
+
+      return newState;
+    case CLOSE_DELETE_MODAL_ONLY:
+      newState = {
+        ...state,
+        deleteModal: false,
       };
 
       return newState;

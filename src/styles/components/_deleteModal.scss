@@ -56,11 +56,11 @@
 // SECOND MODAL
 .delete-modal-dialog-backdrop {
   opacity: 0.7 !important;
-  z-index: 10000;
+  z-index: 1050 !important;
 }
 
 .fade.delete-modal-dialog.modal.show {
-  z-index: 10001;
+  z-index: 11111111;
 }
 
 .delete-modal-dialog .modal-content {

@@ -3,19 +3,20 @@ import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
 import { closeDeleteModal } from "../redux/actions/ModalActions";
 import { deleteColumn, deleteTask } from "../redux/actions/BoardActions";
+import { CLOSE_DELETE_MODAL_ONLY } from "../redux/type";
 
 const DeleteModal = (props) => {
-  const { modal, closeDeleteModal, deleteColumn, deleteTask } = props;
+  const { modal, dispatch } = props;
   const { id, title, columnId } = modal.modalContent;
 
   const handleDelete = (id) => {
     if (modal.taskModal && modal.deleteModal) {
-      deleteTask(columnId, id);
+      dispatch(deleteTask(columnId, id));
     } else if (modal.deleteModal) {
-      deleteColumn(id);
+      dispatch(deleteColumn(id));
     }
 
-    closeDeleteModal();
+    dispatch(closeDeleteModal());
   };
 
   return (
@@ -46,7 +47,7 @@ const DeleteModal = (props) => {
           </div>
           <div
             className="delete-modal__buttons--cancel"
-            onClick={() => closeDeleteModal()}
+            onClick={() => props.dispatch({ type: CLOSE_DELETE_MODAL_ONLY })}
           >
             <p>CANCEL</p>
           </div>
@@ -62,10 +63,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionToProps = {
-  closeDeleteModal,
-  deleteColumn,
-  deleteTask,
-};
-
-export default connect(mapStateToProps, mapActionToProps)(DeleteModal);
+export default connect(mapStateToProps)(DeleteModal);
